@@ -15,7 +15,7 @@ public class ExternalSystemProcessor {
 
     public static void receive(Data data) {
         if (dataSet.contains(data)) {
-           logger.error("wrong execution");
+           throw new RuntimeException("wrong execution");
         }
 
         // пауза от 10 до 2000 мс

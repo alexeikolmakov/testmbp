@@ -16,10 +16,10 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
 
         // случайные коды системы от 1 до 10
-        final IntStream intStream = new Random().ints(1000, 1,10);
+        final IntStream intStream = new Random().ints(100, 1,10);
 
         // внешняя система с 16 потоками
-        final ExternalSystem externalSystem = new ExternalSystem(16);
+        final ExternalSystem externalSystem = new ExternalSystem();
 
         // вызов внеше1 симстемы в 8 потоков
         final ExecutorService executorService = Executors.newFixedThreadPool(8);
@@ -33,12 +33,12 @@ public class Main {
             });
         }
 
-        Thread.sleep(200000);
+        Thread.sleep(40000);
 
         atomic.set(0);
 
         // проверка повторного запуска
-        for (int i = 0; i<100 ; i++) {
+        for (int i = 0; i<10 ; i++) {
             int finalI = i;
             executorService.execute(() -> {
                 logger.info(String.join(" ", "Data", "code:" + finalI, "поток "+ Thread.currentThread().getName()));
@@ -46,7 +46,7 @@ public class Main {
             });
         }
 
-        Thread.sleep(60000);
+        Thread.sleep(6000);
 
         executorService.shutdown();
     }
