@@ -18,11 +18,13 @@ public class Main {
         // случайные коды системы от 1 до 10
         final IntStream intStream = new Random().ints(100, 1,10);
 
-        // внешняя система с 16 потоками
-        final ExternalSystem externalSystem = new ExternalSystem();
+        int threads = 8;
+
+        // внешняя система с 8 потоками
+        final ExternalSystem externalSystem = new ExternalSystem(threads);
 
         // вызов внеше1 симстемы в 8 потоков
-        final ExecutorService executorService = Executors.newFixedThreadPool(8);
+        final ExecutorService executorService = Executors.newFixedThreadPool(threads);
 
         AtomicInteger atomic = new AtomicInteger();
 
