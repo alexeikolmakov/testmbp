@@ -52,19 +52,23 @@ public class ExternalSystem {
         public void execute() {
             lock.lock();
 
-            Data data = poll();
+            try {
+                Data data = poll();
 
-            ExternalSystemProcessor.receive(data);
+                ExternalSystemProcessor.receive(data);
 
-            hashData.computeIfPresent(data, (k, v) -> {
-                if (isEmpty()) {
-                    return null;
-                } else {
-                    return v;
-                }
-            });
+                hashData.computeIfPresent(data, (k, v) -> {
+                    if (isEmpty()) {
+                        return null;
+                    } else {
+                        return v;
+                    }
+                });
 
-            lock.unlock();
+            } finally {
+                lock.unlock();
+            }
+
         }
 
     }
