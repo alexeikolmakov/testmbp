@@ -36,19 +36,22 @@ public class ExternalSystem {
         public void execute() {
             this.lock();
 
-            Data data = dataQueue.poll();
+            try {
 
-            ExternalSystemProcessor.receive(data);
+                Data data = dataQueue.poll();
 
-            hashData.computeIfPresent(data, (k, v) -> {
-                if (dataQueue.isEmpty()) {
-                    return null;
-                } else {
-                    return v;
-                }
-            });
+                ExternalSystemProcessor.receive(data);
 
-            this.unlock();
+                hashData.computeIfPresent(data, (k, v) -> {
+                    if (dataQueue.isEmpty()) {
+                        return null;
+                    } else {
+                        return v;
+                    }
+                });
+            } finally {
+                this.unlock();
+            }
         }
 
         public Action(boolean fair) {
